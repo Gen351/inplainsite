@@ -98,8 +98,8 @@ body {
 }
 
 .brand {
-    font-weight: 700;
-    font-size: 1.25rem;
+    font-weight: 850;
+    font-size: 1.5rem;
     letter-spacing: -0.025em;
 }
 
@@ -423,4 +423,117 @@ body {
     flex: 1;
     width: auto;
     opacity: 1;
+}
+
+
+
+
+
+/* --- MOBILE RESPONSIVE DESIGN (Max-width: 768px) --- */
+@media (max-width: 768px) {
+    /* 1. Remove outer padding and rounded corners so app fills the screen */
+    .page-layout {
+        padding: 0;
+    }
+
+    .app-window {
+        max-width: 100%;
+        height: 100vh;
+        border: none;
+        border-radius: 0;
+    }
+
+    /* 2. Adjust Header for tight spaces */
+    .app-header {
+        padding: 0 16px;
+    }
+
+    .brand {
+        font-size: 1.2rem; /* Smaller logo */
+    }
+
+    .nav-btn {
+        padding: 6px 12px;
+        font-size: 0.85rem;
+    }
+
+    /* 3. MOBILE STACK LOGIC 
+       Instead of side-by-side, we hide the inactive panel completely.
+    */
+    
+    /* Default: Only show Left Panel (Feed) */
+    .left-panel {
+        display: flex;
+        width: 100%;
+        border-right: none;
+    }
+
+    .right-panel {
+        display: none; /* Hide details by default */
+        width: 100%;
+        opacity: 0;
+    }
+
+    /* When an item is clicked or "Add" is pressed (split-active class is added) */
+    .app-content.split-active .left-panel {
+        display: none; /* Hide the feed */
+        flex: none;    /* Reset desktop flex logic */
+    }
+
+    .app-content.split-active .right-panel {
+        display: flex; /* Show the details */
+        width: 100%;
+        opacity: 1;
+    }
+
+    /* 4. Adjust UI Elements for touch */
+    .feed-item {
+        padding: 20px; /* Larger tap target */
+        margin-bottom: 4px;
+    }
+
+    .detail-header {
+        padding: 16px;
+    }
+
+    /* Make inputs and buttons easier to tap on a phone */
+    .action-row {
+        flex-direction: column; /* Stack input fields and decrypt button */
+    }
+
+    .decrypt-btn {
+        width: 100%;
+        height: 48px; /* Standard mobile button height */
+    }
+
+    .input-stack input {
+        height: 48px;
+    }
+
+    /* Floating menu buttons (Confirm/Copy) - move them slightly higher to avoid mobile nav bars */
+    .right-panel-menu {
+        bottom: 24px;
+        right: 24px;
+    }
+
+    .right-panel-menu-item {
+        width: 56px; /* Larger buttons for thumbs */
+        height: 56px;
+    }
+
+    /* 5. Search Bar Tweaks */
+    .search-bar-container {
+        padding: 12px 16px;
+    }
+}
+
+/* Extra small screens (Phones under 380px) */
+@media (max-width: 380px) {
+    .brand {
+        display: none; /* Hide logo name to fit all 3 nav buttons */
+    }
+    .top-nav {
+        width: 100%;
+        justify-content: space-between;
+    }
 }
