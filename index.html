@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Info Vault - Dark Mode</title>
+    <link rel="stylesheet" href="./src/style.css">
+</head>
+<body>
+
+    <!-- Outer wrapper to center app and allow ad spaces -->
+    <div class="page-layout">
+        
+        <!-- Left Banner Ad Space -->
+        <aside class="ad-space left-ad">
+            <!-- <div class="ad-placeholder">Ad Space<br>(160 x 600)</div> -->
+        </aside>
+
+        <!-- Main App Window -->
+        <main class="app-window">
+            
+            <!-- Global Top Header -->
+            <header class="app-header">
+                <div class="brand">InPlainSite</div>
+                <nav class="top-nav">
+                    <button class="nav-btn active" id="search-state-btn">
+                        Search    
+                    </button>
+                    <button class="nav-btn" id="playground-state-btn">
+                        Playground    
+                    </button>
+                    <button class="nav-btn" id="add-state-btn">
+                        Add
+                    </button>
+                </nav>
+            </header>
+
+            <!-- Split Screen Container -->
+            <div class="app-content" id="app-container">
+                
+                <!-- LEFT PANEL (Feed) -->
+                <section class="left-panel">
+                    
+                    <div class="search-bar-container">
+                        <div class="search-input-wrapper">
+                            <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                            </svg>
+                            <!-- Added ID here -->
+                            <input type="text" id="search-input" placeholder="Search accounts, info, vaults..." autocomplete="off">
+                            <!-- Added Clear Button here -->
+                            <button id="search-clear-btn" class="search-clear-btn hidden" title="Clear Search">
+                                <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#e3e3e3">
+                                    <path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="feed-container" class="feed-container">
+                        <div class="feed-item">Netflix Premium - acc_123</div>
+                        <div class="feed-item">Spotify Family - user_xyz</div>
+                        <div class="feed-item">NordVPN - 2025_sub</div>
+                        <div class="feed-item">Crunchyroll - mega_fan</div>
+                        <div class="feed-item">Adobe CC - design_team</div>
+                        <div class="feed-item">Steam Account - gaming_01</div>
+                        <div class="feed-item">HBO Max - shared_acc</div>
+                        <div class="feed-item">ChatGPT Plus - dev_key</div>
+                        <div class="feed-item">AWS Root - master_00</div>
+                        <div class="feed-item">Github Pro - dev_team_1</div>
+                    </div>
+                </section>
+
+                <!-- RIGHT PANEL (Details) -->
+                <section class="right-panel" id="right-panel">
+                    <!-- Top Action Header inside Right Panel -->
+                    <div class="detail-header">
+                        <!-- Close Button -->
+                        <div class="panel-controls">
+                            <h3 class="panel-title">Enter the Keys</h3>
+                            <button class="close-btn" id="close-btn" title="Close Panel">
+                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>
+                            </button>
+                        </div>
+
+                        <div class="action-row">
+                            <div class="input-stack">
+                                <input type="text" id="cipher-field" required placeholder="User / Cipher">
+                                <input type="text" id="key-field" required placeholder="Password / Key">
+                            </div>
+                            <button id="decrypt-btn" class="decrypt-btn">
+                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M223.5-423.5Q200-447 200-480t23.5-56.5Q247-560 280-560t56.5 23.5Q360-513 360-480t-23.5 56.5Q313-400 280-400t-56.5-23.5ZM280-240q-100 0-170-70T40-480q0-100 70-170t170-70q67 0 121.5 33t86.5 87h352l120 120-180 180-80-60-80 60-85-60h-47q-32 54-86.5 87T280-240Zm0-80q56 0 98.5-34t56.5-86h125l58 41 82-61 71 55 75-75-40-40H435q-14-52-56.5-86T280-640q-66 0-113 47t-47 113q0 66 47 113t113 47Z"/></svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Encrypted Data View -->
+                    <div class="detail-body">
+                        <textarea id="encrypted-field" required placeholder="Encrypted data will appear here..."></textarea>
+                        <!-- This grows on one column -->
+                        <!-- Put buttons here -->
+                        <div class="right-panel-menu">
+                            <button id="confirm-add-btn" class="right-panel-menu-item hidden">
+                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M440-120v-320H120v-80h320v-320h80v320h320v80H520v320h-80Z"/></svg>
+                            </button>
+                            <button id="copy-encrypted-field-btn" class="right-panel-menu-item">
+                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M360-240q-33 0-56.5-23.5T280-320v-480q0-33 23.5-56.5T360-880h360q33 0 56.5 23.5T800-800v480q0 33-23.5 56.5T720-240H360Zm0-80h360v-480H360v480ZM200-80q-33 0-56.5-23.5T120-160v-560h80v560h440v80H200Zm160-240v-480 480Z"/></svg>
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+
+        <!-- Right Banner Ad Space -->
+        <aside class="ad-space right-ad">
+            <!-- <div class="ad-placeholder">Ad Space<br>(160 x 600)</div> -->
+        </aside>
+
+    </div>
+
+    <!-- UI Logic Script -->
+    <script type="module" src="./src/app.js"></script>
+</body>
+</html>

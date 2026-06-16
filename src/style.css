@@ -1,0 +1,426 @@
+/* --- DARK MODE VARIABLES --- */
+:root {
+    /* Page Background (Deepest black) */
+    --bg-page: #000000;      
+    /* App Window Background (Very dark gray) */
+    --bg-app: #0a0a0a;       
+    /* Panel/Input Backgrounds */
+    --bg-surface: #171717;   
+    /* Hover states */
+    --bg-hover: #262626;     
+    /* Borders */
+    --border-color: #2e2e2e; 
+    
+    /* Text Colors */
+    --text-main: #f5f5f5;
+    --text-muted: #a3a3a3;
+    
+    /* Accents (Clean white/silver accent for a premium tech feel) */
+    --accent-bg: #eeeeee;
+    --accent-text: #000000;
+    
+    --font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: var(--font-family);
+}
+
+body {
+    background-color: var(--bg-page);
+    color: var(--text-main);
+    height: 100vh;
+    overflow: hidden; 
+}
+
+/* --- PAGE LAYOUT & AD SPACES --- */
+.page-layout {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 24px;
+    height: 100vh;
+    padding: 24px;
+}
+
+.ad-space {
+    flex: 0 0 160px; /* Standard Skyscraper ad width */
+    height: 100%;
+    max-height: 600px;
+    display: none; /* Hidden on smaller screens */
+}
+
+/* Show ads only when the screen is wide enough */
+@media (min-width: 1100px) {
+    .ad-space { display: block; }
+}
+
+.ad-placeholder {
+    width: 100%;
+    height: 100%;
+    border: 1px dashed var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    border-radius: 8px;
+}
+
+/* --- MAIN APP WINDOW --- */
+.app-window {
+    flex: 1;
+    max-width: 900px; /* Restricts the app width so ads have room */
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--bg-app);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+/* --- GLOBAL HEADER --- */
+.app-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 24px;
+    height: 64px;
+    border-bottom: 1px solid var(--border-color);
+    background-color: var(--bg-app);
+    z-index: 20;
+}
+
+.brand {
+    font-weight: 700;
+    font-size: 1.25rem;
+    letter-spacing: -0.025em;
+}
+
+.top-nav {
+    display: flex;
+    gap: 8px;
+}
+
+.nav-btn {
+    background: transparent;
+    color: var(--text-muted);
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.nav-btn:hover {
+    color: var(--text-main);
+    background: var(--bg-surface);
+}
+
+.nav-btn.active {
+    color: var(--accent-text);
+    background: var(--accent-bg);
+}
+
+/* --- SPLIT SCREEN CONTAINER --- */
+.app-content {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+}
+
+/* --- LEFT PANEL --- */
+.left-panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid transparent;
+    transition: flex 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.search-bar-container {
+    padding: 16px 24px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.search-input-wrapper {
+    position: relative; /* So the button can be absolute */
+    display: flex;
+    align-items: center;
+}
+
+.search-clear-btn {
+    position: absolute;
+    right: 10px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px;
+    border-radius: 50%;
+}
+
+.search-clear-btn:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.hidden {
+    display: none !important;
+}
+
+.search-input-wrapper input {
+    width: 100%;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
+    padding: 12px 16px 12px 42px;
+    border-radius: 12px;
+    font-size: 0.95rem;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.search-input-wrapper input:focus {
+    border-color: var(--text-muted);
+}
+
+.search-icon {
+    position: absolute;
+    left: 14px;
+    width: 18px;
+    height: 18px;
+    color: var(--text-muted);
+}
+
+/* Feed List */
+.feed-container {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* Dark Mode Scrollbar */
+.feed-container::-webkit-scrollbar { width: 6px; }
+.feed-container::-webkit-scrollbar-track { background: transparent; }
+.feed-container::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 10px; }
+
+.feed-item {
+    padding: 16px 24px;
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    background: var(--bg-surface);
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 0.95rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: all 0.2s ease;
+}
+
+.feed-item:hover {
+    background: var(--bg-hover);
+    border-color: #404040;
+}
+
+.feed-item.active {
+    border-color: var(--accent-bg);
+    background: var(--accent-bg);
+    color: var(--accent-text);
+}
+
+/* --- RIGHT PANEL --- */
+.right-panel {
+    width: 0;
+    opacity: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    background: var(--bg-app);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.detail-header {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 24px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.panel-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.panel-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-muted);
+}
+
+.close-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.close-btn:hover {
+    background: var(--bg-surface);
+    color: var(--text-main);
+}
+
+.close-btn svg { width: 20px; height: 20px; }
+
+.action-row {
+    display: flex;
+    gap: 16px;
+}
+
+.input-stack {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.input-stack input {
+    width: 100%;
+    padding: 12px 16px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
+    border-radius: 12px;
+    font-size: 0.95rem;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.input-stack input:focus { border-color: var(--text-muted); }
+.input-stack input[readonly] { background: var(--bg-app); color: var(--text-muted); }
+
+
+.decrypt-btn {
+    width: 75px;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    background: var(--bg-surface);
+    color: var(--text-main);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.decrypt-btn:hover {
+    background: var(--bg-hover);
+}
+
+.detail-body {
+    flex: 1;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    position: relative; /* Anchor for absolute positioning */
+}
+
+.detail-body textarea {
+    flex: 1;
+    width: 100%;
+    padding: 16px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    color: var(--text-muted);
+    border-radius: 12px;
+    resize: none;
+    font-family: ui-monospace, monospace;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    outline: none;
+}
+
+.confirm-add-btn {
+
+}
+
+.confirm-add-btn:hover {
+    background: var(--accent-bg);
+    color: var(--accent-text);
+    border-color: var(--accent-bg);
+}
+
+.right-panel-menu {
+    position: absolute;
+    bottom: 40px; /* Adjusted to sit within the textarea padding */
+    right: 40px;  /* Adjusted to sit within the textarea padding */
+    z-index: 10;  /* Ensures it floats above the textarea */
+
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+
+    background: transparent;
+    color: var(--text-main);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.right-panel-menu-item {
+    /* Styled as a clean square button for the "+" icon */
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+
+    border: 1px solid var(--border-color);
+    border-radius: 100%;
+    background: var(--bg-surface);
+    color: var(--text-main);
+    font-weight: 600;
+    cursor: pointer;
+
+    transition: all 0.2s ease;
+}
+
+.right-panel-menu-item:hover {
+    background: var(--bg-hover);
+}
+
+.right-panel-menu-item:hover svg path {
+    transform: scale(1.1);
+}
+
+/* --- THE SPLIT LOGIC --- */
+.app-content.split-active .left-panel {
+    flex: 0 0 320px; /* Locks left panel width when active */
+    border-right-color: var(--border-color);
+}
+
+.app-content.split-active .right-panel {
+    flex: 1;
+    width: auto;
+    opacity: 1;
+}
