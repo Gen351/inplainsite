@@ -33,6 +33,7 @@ body {
     background-color: var(--bg-page);
     color: var(--text-main);
     height: 100vh;
+    height: 100dvh; /* Accounts for dynamic browser toolbars on mobile */
     overflow: hidden; 
 }
 
@@ -43,6 +44,7 @@ body {
     align-items: center;
     gap: 24px;
     height: 100vh;
+    height: 100dvh; /* Dynamic viewport height */
     padding: 24px;
 }
 
@@ -95,6 +97,7 @@ body {
     border-bottom: 1px solid var(--border-color);
     background-color: var(--bg-app);
     z-index: 20;
+    flex-shrink: 0; /* Prevents header from shrinking on small viewports */
 }
 
 .brand {
@@ -135,6 +138,7 @@ body {
     display: flex;
     flex: 1;
     overflow: hidden;
+    min-height: 0; /* Allows nested flex items to shrink below default sizes */
 }
 
 /* --- LEFT PANEL --- */
@@ -144,11 +148,13 @@ body {
     flex-direction: column;
     border-right: 1px solid transparent;
     transition: flex 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    min-height: 0;
 }
 
 .search-bar-container {
     padding: 16px 24px;
     border-bottom: 1px solid var(--border-color);
+    flex-shrink: 0;
 }
 
 .search-input-wrapper {
@@ -229,6 +235,7 @@ body {
     overflow: hidden;
     text-overflow: ellipsis;
     transition: all 0.2s ease;
+    flex-shrink: 0;
 }
 
 .feed-item:hover {
@@ -251,6 +258,7 @@ body {
     flex-direction: column;
     background: var(--bg-app);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    min-height: 0; /* Allows panel to shrink vertically */
 }
 
 .detail-header {
@@ -259,6 +267,7 @@ body {
     gap: 16px;
     padding: 24px;
     border-bottom: 1px solid var(--border-color);
+    flex-shrink: 0; /* Prevents the inputs from compressing vertically */
 }
 
 .panel-controls {
@@ -342,6 +351,7 @@ body {
     display: flex;
     flex-direction: column;
     position: relative; /* Anchor for absolute positioning */
+    min-height: 0; /* Important: Allows this block to shrink inside right-panel */
 }
 
 .detail-body textarea {
@@ -357,16 +367,7 @@ body {
     font-size: 0.9rem;
     line-height: 1.5;
     outline: none;
-}
-
-.confirm-add-btn {
-
-}
-
-.confirm-add-btn:hover {
-    background: var(--accent-bg);
-    color: var(--accent-text);
-    border-color: var(--accent-bg);
+    min-height: 0; /* Allows textarea element to scale down when space is tight */
 }
 
 .right-panel-menu {
@@ -425,10 +426,6 @@ body {
     opacity: 1;
 }
 
-
-
-
-
 /* --- MOBILE RESPONSIVE DESIGN (Max-width: 768px) --- */
 @media (max-width: 768px) {
     /* 1. Remove outer padding and rounded corners so app fills the screen */
@@ -439,6 +436,7 @@ body {
     .app-window {
         max-width: 100%;
         height: 100vh;
+        height: 100dvh; /* Accurate height on mobile devices */
         border: none;
         border-radius: 0;
     }
@@ -510,6 +508,11 @@ body {
         height: 48px;
     }
 
+    /* Reduce body padding on mobile to save vertical viewport space */
+    .detail-body {
+        padding: 16px;
+    }
+
     /* Floating menu buttons (Confirm/Copy) - move them slightly higher to avoid mobile nav bars */
     .right-panel-menu {
         bottom: 24px;
@@ -535,5 +538,48 @@ body {
     .top-nav {
         width: 100%;
         justify-content: space-between;
+    }
+}
+
+/* --- OPTIMIZATIONS FOR SHORT/LANDSCAPE SCREENS (Under 600px tall) --- */
+@media (max-height: 600px) and (max-width: 768px) {
+    .app-header {
+        height: 48px; /* Compact brand header */
+    }
+    
+    .detail-header {
+        padding: 12px;
+        gap: 8px;
+    }
+
+    .panel-controls {
+        margin-bottom: 2px;
+    }
+
+    .input-stack {
+        gap: 8px;
+    }
+
+    .input-stack input {
+        height: 38px; /* Compact text inputs */
+        padding: 8px 12px;
+    }
+
+    .decrypt-btn {
+        height: 38px; /* Compact action button */
+    }
+
+    .detail-body {
+        padding: 12px; /* Less outer padding to yield height back to textarea */
+    }
+
+    .right-panel-menu {
+        bottom: 20px;
+        right: 20px;
+    }
+
+    .right-panel-menu-item {
+        width: 44px;
+        height: 44px;
     }
 }
