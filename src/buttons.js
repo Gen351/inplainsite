@@ -3,7 +3,7 @@ import { fetch_init_rows, addEntryToSheet } from './api.js';
 import { getInfoCache } from './cache.js';
 import { secureTwoKeyEncrypt, secureTwoKeyDecrypt } from './cipher.js';
 import { APP_STATES, setState, getAppState } from './state.js';
-import { populate_feed_container, removeItemHighlights } from './ui.js'; 
+import { populate_feed_container, removeItemHighlights, showFeedSpinner } from './ui.js';
 
 const container = document.getElementById('app-container');
 const feedContainer = document.getElementById('feed-container');
@@ -173,33 +173,33 @@ confirmAddBtn.addEventListener('click', async () => {
     const name = cipherField.value;
     const data = encryptedField.value;
 
-    // Validation
     if (!name || !data) {
         showToast('Name and encrypted data cannot be empty', 'error');
         return;
     }
 
     try {
+        // 1. Show spinner inside the Add button
         confirmAddBtn.disabled = true;
-        confirmAddBtn.textContent = '...';
+        confirmAddBtn.innerHTML = '<div class="spinner"></div>';
 
+        // 2. Write to DB
         await addEntryToSheet(name, data);
 
-        // Success: clear fields and refresh cache
+        // Success: clear fields
         cipherField.value = '';
         keyField.value = '';
         encryptedField.value = '';
         showToast('Entry added successfully!', 'success');
 
-        // Refresh the feed from cache
+        // 3. Show spinner in left panel while refetching
+        showFeedSpinner(); 
         await fetch_init_rows();
         await populate_feed_container();
 
     } catch (error) {
-        // Keep the exact error stack in console so you can inspect it in DevTools [9]
         console.error("Database Write Failed:", error);
 
-        // Map ugly/confusing system exceptions to clean user messages
         let userFriendlyMsg = "Something went wrong. Try again.";
         const errorMsg = error.message ? error.message.toLowerCase() : "";
 
@@ -213,6 +213,7 @@ confirmAddBtn.addEventListener('click', async () => {
 
         showToast(userFriendlyMsg, 'error');
     } finally {
+        // 4. Restore original button icon
         confirmAddBtn.disabled = false;
         confirmAddBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M440-120v-320H120v-80h320v-320h80v320h320v80H520v320h-80Z"/></svg>';
     }

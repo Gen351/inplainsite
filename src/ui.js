@@ -3,16 +3,22 @@ import { getInfoCache } from './cache.js';
 
 const feedContainer = document.getElementById('feed-container');
 
+// NEW: Inject spinner into the left panel
+export function showFeedSpinner() {
+    feedContainer.innerHTML = '<div class="spinner panel-spinner"></div>';
+    feedContainer.classList.add('loading-locked');
+}
+
 export async function populate_feed_container(filterText = "") {
     const cache = await getInfoCache();
     feedContainer.innerHTML = ''; 
+    feedContainer.classList.remove('loading-locked'); // Unlock feed
 
     const query = filterText.toLowerCase().trim();
 
     Object.keys(cache).forEach(key => {
         const item = cache[key];
         
-        // Check if name matches query (if query exists)
         if (query === "" || item.name.toLowerCase().includes(query)) {
             const div = document.createElement('div');
             div.className = 'feed-item';

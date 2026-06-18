@@ -1,11 +1,12 @@
 // app.js
 import { fetch_init_rows } from './api.js';
-import { populate_feed_container } from './ui.js';
-import './buttons.js'; // Just import to initialize listeners
+import { populate_feed_container, showFeedSpinner } from './ui.js';
+import './buttons.js'; 
 
 async function init() {
-    await fetch_init_rows(); 
-    await populate_feed_container();
+    showFeedSpinner(); // 1. Show the panel spinner
+    await fetch_init_rows(); // 2. Fetch data
+    await populate_feed_container(); // 3. Render items (removes spinner)
 }
 
 init();
