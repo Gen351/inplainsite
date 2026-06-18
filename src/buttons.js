@@ -196,7 +196,22 @@ confirmAddBtn.addEventListener('click', async () => {
         await populate_feed_container();
 
     } catch (error) {
-        showToast('Error adding entry: ' + error.message, 'error');
+        // Keep the exact error stack in console so you can inspect it in DevTools [9]
+        console.error("Database Write Failed:", error);
+
+        // Map ugly/confusing system exceptions to clean user messages
+        let userFriendlyMsg = "Something went wrong. Try again.";
+        const errorMsg = error.message ? error.message.toLowerCase() : "";
+
+        if (errorMsg.includes("unauthorized") || errorMsg.includes("recaptcha") || errorMsg.includes("bot") || errorMsg.includes("domain")) {
+            userFriendlyMsg = "Security verification failed. Try again from the official site or turn off your adblocker--just for one moment bro.";
+        } else if (errorMsg.includes("fetch") || errorMsg.includes("network") || errorMsg.includes("urlfetchapp") || errorMsg.includes("syntaxerror")) {
+            userFriendlyMsg = "Network error: Unable to reach the database. Try again later.";
+        } else if (errorMsg.includes("empty") || errorMsg.includes("missing")) {
+            userFriendlyMsg = "Input fields cannot be blank.";
+        }
+
+        showToast(userFriendlyMsg, 'error');
     } finally {
         confirmAddBtn.disabled = false;
         confirmAddBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M440-120v-320H120v-80h320v-320h80v320h320v80H520v320h-80Z"/></svg>';
