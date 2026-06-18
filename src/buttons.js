@@ -403,34 +403,20 @@ function containsMarkdown(text) {
     return mdPatterns.some(pattern => pattern.test(text));
 }
 
+const MD_VIEWER_URL = 'https://md-viewer-alpha.vercel.app';
+
 function updateMdViewerButton() {
     if (!btnOpenMd) return;
     const text = encryptedField.value;
     if (text.trim() && containsMarkdown(text)) {
         btnOpenMd.style.display = '';
-    } else {
-        btnOpenMd.style.display = 'none';
-    }
-}
-
-const MD_VIEWER_URL = 'https://md-viewer-alpha.vercel.app';
-
-if (btnOpenMd) {
-    btnOpenMd.addEventListener('click', async () => {
-        const text = encryptedField.value;
-        if (!text.trim()) {
-            showToast('No content to view!', 'error');
-            return;
-        }
         const filename = 'Decrypted_Record.md';
         const encodedContent = encodeURIComponent(text);
         const encodedFilename = encodeURIComponent(filename);
-        const targetUrl = `${MD_VIEWER_URL}/#content=${encodedContent}&filename=${encodedFilename}`;
-        const newWindow = window.open(targetUrl, '_blank');
-        if (!newWindow) {
-            window.location.href = targetUrl;
-        }
-    });
+        btnOpenMd.href = `${MD_VIEWER_URL}/#content=${encodedContent}&filename=${encodedFilename}`;
+    } else {
+        btnOpenMd.style.display = 'none';
+    }
 }
 
 async function copyToClipboard(text) {
