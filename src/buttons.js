@@ -19,6 +19,7 @@ const closeBtn = document.getElementById('close-btn');
 const decryptBtn = document.getElementById('decrypt-btn');
 const confirmAddBtn = document.getElementById('confirm-add-btn');
 const copyToClipboardBtn = document.getElementById('copy-encrypted-field-btn');
+const btnOpenMd = document.getElementById('btn-open-md');
 
 const cipherField = document.getElementById('cipher-field');
 const keyField = document.getElementById('key-field');
@@ -48,7 +49,10 @@ function resetEncryptionState() {
 
 if (cipherField) cipherField.addEventListener('input', resetEncryptionState);
 if (keyField) keyField.addEventListener('input', resetEncryptionState);
-if (encryptedField) encryptedField.addEventListener('input', resetEncryptionState);
+if (encryptedField) {
+    encryptedField.addEventListener('input', resetEncryptionState);
+    encryptedField.addEventListener('input', updateMdViewerButton);
+}
 
 function syncUI(clickedItem = null) {
     const state = getAppState();
@@ -61,6 +65,7 @@ function syncUI(clickedItem = null) {
         cipherField.value = "";
         keyField.value = "";
         encryptedField.value = "";
+        updateMdViewerButton();
         container.classList.remove('split-active');
         const targetTag = document.getElementById('target-tag-name');
         if (targetTag) targetTag.textContent = "Select an item";
@@ -246,6 +251,7 @@ if (decryptBtn) {
 
         if (result.success) {
             encryptedField.value = result.decryptedText;
+            updateMdViewerButton();
             showToast("Success!", "success");
             if (state === APP_STATES.PLAYGROUND || state === APP_STATES.ADD) {
                 setIsEncrypted(true);
@@ -375,6 +381,52 @@ if (addStateBtn) {
             setState(APP_STATES.ADD);
             syncUI();
         }
+    });
+}
+
+function containsMarkdown(text) {
+    const mdPatterns = [
+        /^#{1,6}\s/m,
+        /\*\*[^*]+\*\*/,
+        /\*[^*]+\*/,
+        /^[-*+]\s/m,
+        /^\d+\.\s/m,
+        /```[\s\S]*?```/,
+        /\[.+?\]\(.+?\)/,
+        /!\[.+?\]\(.+?\)/,
+        /^>\s/m,
+        /^---+$/m,
+        /\|.+\|/,
+        /~~.+?~~/,
+        /`[^`]+`/,
+    ];
+    return mdPatterns.some(pattern => pattern.test(text));
+}
+
+function updateMdViewerButton() {
+    if (!btnOpenMd) return;
+    const text = encryptedField.value;
+    if (text.trim() && containsMarkdown(text)) {
+        btnOpenMd.style.display = '';
+    } else {
+        btnOpenMd.style.display = 'none';
+    }
+}
+
+const MD_VIEWER_URL = 'https://md-viewer-alpha.vercel.app';
+
+if (btnOpenMd) {
+    btnOpenMd.addEventListener('click', () => {
+        const text = encryptedField.value;
+        if (!text.trim()) {
+            showToast('No content to view!', 'error');
+            return;
+        }
+        const filename = 'Decrypted_Record.md';
+        const encodedContent = encodeURIComponent(text);
+        const encodedFilename = encodeURIComponent(filename);
+        const targetUrl = `${MD_VIEWER_URL}/#content=${encodedContent}&filename=${encodedFilename}`;
+        window.open(targetUrl, '_blank');
     });
 }
 

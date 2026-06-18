@@ -767,6 +767,10 @@ body {
     height: 12px;
 }
 
+.copy-text-btn + .copy-text-btn {
+    margin-left: 12px;
+}
+
 .detail-body textarea {
     flex: 1;
     width: 100%;
