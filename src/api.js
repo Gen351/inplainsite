@@ -35,13 +35,20 @@ export async function addEntryToSheet(name, data) {
     const deploymentUrl = getSheetEndpoint();
 
     return new Promise((resolve, reject) => {
-        // Execute reCAPTCHA to get a transient token bound to your domain
-        grecaptcha.ready(async () => {
+        // 1. Check for the Enterprise namespace
+        if (typeof grecaptcha === 'undefined' || typeof grecaptcha.enterprise === 'undefined') {
+            reject(new Error("reCAPTCHA Enterprise failed to load. Please verify your Vercel deployment and that your site key is active."));
+            return;
+        }
+
+        // 2. Call the enterprise namespace
+        grecaptcha.enterprise.ready(async () => {
             try {
-                const token = await grecaptcha.execute(RECAPTCHA_SITE_KEY, { action: 'add_entry' });
+                // 3. Execute using the enterprise namespace
+                const token = await grecaptcha.enterprise.execute(RECAPTCHA_SITE_KEY, { action: 'add_entry' });
 
                 const bodyParams = new URLSearchParams();
-                bodyParams.set('recaptchaToken', token); // One-time use token
+                bodyParams.set('recaptchaToken', token);
                 bodyParams.set('name', name);
                 bodyParams.set('data', data);
 
