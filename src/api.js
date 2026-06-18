@@ -1,7 +1,7 @@
 // api.js
 import { add_payload_to_cache, resetCache } from './cache.js';
 import { getSheetId, getSheetEndpoint } from './sheet.js';
-
+// hmm
 const RECAPTCHA_SITE_KEY = import.meta.env.VITE_RECAPTCHA_SITE_KEY;
 
 export async function fetch_init_rows() {
@@ -35,17 +35,17 @@ export async function addEntryToSheet(name, data) {
     const deploymentUrl = getSheetEndpoint();
 
     return new Promise((resolve, reject) => {
-        // 1. Verify standard classic v3 grecaptcha is loaded
-        if (typeof grecaptcha === 'undefined' || typeof grecaptcha.ready === 'undefined') {
-            reject(new Error("reCAPTCHA failed to load. Please check your connection or ad-blocker."));
+        // 1. Check for the Enterprise namespace
+        if (typeof grecaptcha === 'undefined' || typeof grecaptcha.enterprise === 'undefined') {
+            reject(new Error("reCAPTCHA Enterprise failed to load. Please verify your Vercel deployment and that your site key is active."));
             return;
         }
 
-        // 2. Call standard grecaptcha.ready
-        grecaptcha.ready(async () => {
+        // 2. Call the enterprise namespace
+        grecaptcha.enterprise.ready(async () => {
             try {
-                // 3. Execute standard grecaptcha
-                const token = await grecaptcha.execute(RECAPTCHA_SITE_KEY, { action: 'add_entry' });
+                // 3. Execute using the enterprise namespace
+                const token = await grecaptcha.enterprise.execute(RECAPTCHA_SITE_KEY, { action: 'add_entry' });
 
                 const bodyParams = new URLSearchParams();
                 bodyParams.set('recaptchaToken', token);
@@ -66,6 +66,7 @@ export async function addEntryToSheet(name, data) {
 
                 resolve(result);
             } catch (error) {
+                console.error('Request failed:', error);
                 reject(error);
             }
         });
