@@ -37,6 +37,31 @@ body {
     overflow: hidden; 
 }
 
+/*  for reCAPTCHA -_- */
+.grecaptcha-badge { 
+    visibility: hidden !important; 
+}
+
+.recaptcha-attribution {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    text-align: center;
+    padding: 12px;
+    line-height: 1.4;
+    border-top: 1px solid var(--border-color);
+    background-color: var(--bg-app);
+}
+
+.recaptcha-attribution a {
+    color: var(--text-main);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.recaptcha-attribution a:hover {
+    text-decoration: underline;
+}
+
 /* --- PAGE LAYOUT & AD SPACES --- */
 .page-layout {
     display: flex;
@@ -100,10 +125,124 @@ body {
     flex-shrink: 0; /* Prevents header from shrinking on small viewports */
 }
 
+/* --- INFO/ABOUT MODAL --- */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.85); /* Slightly transparent dark overlay */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    
+    /* Hidden by default with smooth transition */
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+}
+
+/* Toggle class to show modal */
+.modal.show {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.modal-content {
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    width: 90%;
+    max-width: 480px;
+    border-radius: 16px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+    transform: translateY(10px);
+    transition: transform 0.2s ease;
+}
+
+.modal.show .modal-content {
+    transform: translateY(0);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.modal-header h2 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+}
+
+.modal-body {
+    padding: 24px;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: var(--text-main);
+    max-height: 60vh;
+    overflow-y: auto;
+}
+
+.modal-body h3 {
+    margin-top: 18px;
+    margin-bottom: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-muted);
+}
+
+.modal-body ul {
+    margin-left: 20px;
+    margin-bottom: 16px;
+}
+
+.modal-body li {
+    margin-bottom: 6px;
+}
+
+.modal .recaptcha-attribution {
+    font-size: 0.68rem;
+    color: var(--text-muted);
+    text-align: center;
+    padding: 16px 24px;
+    border-top: 1px solid var(--border-color);
+    background-color: var(--bg-app);
+}
+
+.modal .recaptcha-attribution a {
+    color: var(--text-main);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.modal .recaptcha-attribution a:hover {
+    text-decoration: underline;
+}
+
+/* Ensure the brand button looks like a button */
 .brand {
-    font-weight: 850;
+    background: transparent;
+    border: none;
+    color: var(--text-main);
+    cursor: pointer;
     font-size: 1.5rem;
+    font-weight: 850;
     letter-spacing: -0.025em;
+    padding: 6px 12px;
+    border-radius: 8px;
+    transition: background-color 0.2s;
+}
+
+.brand:hover {
+    background-color: var(--bg-surface);
 }
 
 .top-nav {

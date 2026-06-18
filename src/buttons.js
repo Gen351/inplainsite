@@ -49,7 +49,35 @@ function syncUI(clickedItem = null) {
     }
 }
 
+
+// --- Modal Handlers --- //
+const brandBtn = document.querySelector('.brand');
+const aboutModal = document.getElementById('about-modal');
+const closeModalBtn = document.getElementById('close-modal-btn');
+
+if (brandBtn && aboutModal && closeModalBtn) {
+    // Open the modal when clicking the brand logo
+    brandBtn.addEventListener('click', () => {
+        aboutModal.classList.add('show');
+    });
+
+    // Close the modal when clicking the 'X' button
+    closeModalBtn.addEventListener('click', () => {
+        aboutModal.classList.remove('show');
+    });
+
+    // Close the modal if the user clicks anywhere outside of the modal window
+    aboutModal.addEventListener('click', (e) => {
+        if (e.target === aboutModal) {
+            aboutModal.classList.remove('show');
+        }
+    });
+}
+
+
+
 // --- Button Functionalities --- //
+
 
 // Item Click
 feedContainer.addEventListener('click', async (e) => {

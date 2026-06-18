@@ -6,7 +6,7 @@
     <title>InPlainSite - Dark Mode</title>
     <link rel="stylesheet" href="./src/style.css">
     <!-- Include Google reCAPTCHA v3 with your public Site Key -->
-    <script src="https://www.google.com/recaptcha/api.js?render=6LcVOSQtAAAAAAIM2F98uvumMW7-j4_8oZnGCwOS"></script>
+    <script src="https://www.google.com/recaptcha/enterprise.js?render=6LcVOSQtAAAAAAIM2F98uvumMW7-j4_8oZnGCwOS"></script>
 </head>
 <body>
 
@@ -123,6 +123,47 @@
             <!-- <div class="ad-placeholder">Ad Space<br>(160 x 600)</div> -->
         </aside>
 
+    </div>
+
+    <!-- Info / About Modal -->
+    <div id="about-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>About InPlainSite</h2>
+                <button id="close-modal-btn" class="close-btn" title="Close">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p><strong>InPlainSite</strong> is a decentralized, local-first utility designed to securely obfuscate and share messages across the web using Google Sheets as a secure database.</p>
+                
+                <h3>How it works:</h3>
+                <ul>
+                    <li><strong>Browse:</strong> Look through the public feed of obfuscated entries.</li>
+                    <li>
+                        <strong>
+                            
+                        </strong> Input the correct <strong>Key</strong> to decode the data locally inside your browser.</li>
+                    <li>
+                        <strong>
+                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M223.5-423.5Q200-447 200-480t23.5-56.5Q247-560 280-560t56.5 23.5Q360-513 360-480t-23.5 56.5Q313-400 280-400t-56.5-23.5ZM280-240q-100 0-170-70T40-480q0-100 70-170t170-70q67 0 121.5 33t86.5 87h352l120 120-180 180-80-60-80 60-85-60h-47q-32 54-86.5 87T280-240Zm0-80q56 0 98.5-34t56.5-86h125l58 41 82-61 71 55 75-75-40-40H435q-14-52-56.5-86T280-640q-66 0-113 47t-47 113q0 66 47 113t113 47Z"/></svg>
+                        </strong>: Encrypt messages locally on your device with your chosen keys</li>
+                    <li>
+                        <strong>
+                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M440-120v-320H120v-80h320v-320h80v320h320v80H520v320h-80Z"/></svg>
+                        </strong>: Publish them in the site.
+                    </li> 
+                </ul>
+            </div>
+            
+            <!-- Required by google -_- -->
+            <!-- Google's legally required disclosures (safely contained here!) -->
+            <footer class="recaptcha-attribution">
+                This site is protected by reCAPTCHA and the Google 
+                <a href="https://policies.google.com/privacy" target="_blank">Privacy Policy</a> and 
+                <a href="https://policies.google.com/terms" target="_blank">Terms of Service</a> apply.
+            </footer>
+        </div>
     </div>
 
     <!-- UI Logic Script -->
