@@ -1,4 +1,4 @@
-import CryptoJS from 'https://esm.sh/crypto-js@4.2.0';
+import CryptoJS from 'crypto-js';
 
 /**
  * Encrypts data using AES-256 driven by two distinct input strings

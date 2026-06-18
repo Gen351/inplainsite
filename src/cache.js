@@ -1,4 +1,3 @@
-// cache.js
 export const initItemCount = 20;
 
 // Keep track of how many are cached

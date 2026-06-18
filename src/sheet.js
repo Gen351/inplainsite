@@ -1,5 +1,5 @@
 const SHEET_ID = "1-vZigfxDtew870csptOHzjw4JUKwPwuY9jEUW1GtqcM";
-const SHEET_URL = "https://docs.google.com/spreadsheets/d/1-vZigfxDtew870csptOHzjw4JUKwPwuY9jEUW1GtqcM"
+const SHEET_URL = "https://docs.google.com/spreadsheets/d/1-vZigfxDtew870csptOHzjw4JUKwPwuY9jEUW1GtqcM";
 
 // Vite only exposes env vars prefixed with `VITE_` to client code.
 const SHEET_ENDPOINT = "https://script.google.com/macros/s/AKfycbyftBH2a6IW0zzZAp8_GUbYexreSKUWOJrQzXR8x9qx9h3lMhwabqLerCPYrkP1dxny/exec";

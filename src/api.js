@@ -1,8 +1,8 @@
 // api.js
 import { add_payload_to_cache, resetCache } from './cache.js';
 import { getSheetId, getSheetEndpoint } from './sheet.js';
-// hmm
-const RECAPTCHA_SITE_KEY = import.meta.env.VITE_RECAPTCHA_SITE_KEY;
+
+const RECAPTCHA_SITE_KEY = import.meta.env.VITE_RECAPTCHA_SITE_KEY || "6LcVOSQtAAAAAAIM2F98uvumMW7-j4_8oZnGCwOS";
 
 export async function fetch_init_rows() {
     // Reading remains completely open and public
@@ -36,16 +36,16 @@ export async function addEntryToSheet(name, data) {
 
     return new Promise((resolve, reject) => {
         // 1. Check for the Enterprise namespace
-        if (typeof grecaptcha === 'undefined' || typeof grecaptcha.enterprise === 'undefined') {
+        if (typeof window.grecaptcha === 'undefined' || typeof window.grecaptcha.enterprise === 'undefined') {
             reject(new Error("reCAPTCHA Enterprise failed to load. Please verify your Vercel deployment and that your site key is active."));
             return;
         }
 
         // 2. Call the enterprise namespace
-        grecaptcha.enterprise.ready(async () => {
+        window.grecaptcha.enterprise.ready(async () => {
             try {
                 // 3. Execute using the enterprise namespace
-                const token = await grecaptcha.enterprise.execute(RECAPTCHA_SITE_KEY, { action: 'add_entry' });
+                const token = await window.grecaptcha.enterprise.execute(RECAPTCHA_SITE_KEY, { action: 'add_entry' });
 
                 const bodyParams = new URLSearchParams();
                 bodyParams.set('recaptchaToken', token);

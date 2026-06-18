@@ -1,0 +1,6 @@
+{
+  "name": "InPlainSite",
+  "description": "A decentralized, local-first utility designed to securely obfuscate and share messages across the web using Google Sheets as a database.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
