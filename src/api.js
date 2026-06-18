@@ -1,8 +1,11 @@
 // api.js
-import { add_payload_to_cache, resetCache } from './cache.js'; // Import resetCache
-import { getSheetId, getSheetEndpoint, getAppKey } from './sheet.js';
+import { add_payload_to_cache, resetCache } from './cache.js';
+import { getSheetId, getSheetEndpoint } from './sheet.js';
+
+const RECAPTCHA_SITE_KEY = import.meta.env.VITE_RECAPTCHA_SITE_KEY;
 
 export async function fetch_init_rows() {
+    // Reading remains completely open and public
     const SHEET_ID = getSheetId();
     const query = encodeURIComponent("SELECT A, B LIMIT 20");
     const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&tq=${query}`;
@@ -15,8 +18,7 @@ export async function fetch_init_rows() {
         
         if (!data.table.rows) return;
 
-        resetCache(); // IMPORTANT: Clear old cache before filling new one
-
+        resetCache();
         data.table.rows.forEach(row => {
             const payload = {
                 name: row.c[0] ? row.c[0].v : "",
@@ -28,33 +30,38 @@ export async function fetch_init_rows() {
         console.error("Fetch init failed:", error);
     }
 }
-// ... keep addEntryToSheet as it is ...
-
 
 export async function addEntryToSheet(name, data) {
     const deploymentUrl = getSheetEndpoint();
-    const appKey = getAppKey();
 
-    const bodyParams = new URLSearchParams();
-    bodyParams.set('appKey', appKey);
-    bodyParams.set('name', name);
-    bodyParams.set('data', data);
+    return new Promise((resolve, reject) => {
+        // Execute reCAPTCHA to get a transient token bound to your domain
+        grecaptcha.ready(async () => {
+            try {
+                const token = await grecaptcha.execute(RECAPTCHA_SITE_KEY, { action: 'add_entry' });
 
-    try {
-        // Use 'no-cors' mode. 
-        // Note: You won't be able to read the 'success' message in JS,
-        // but the data WILL be saved to the sheet.
-        await fetch(deploymentUrl, {
-            method: 'POST',
-            mode: 'no-cors', 
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: bodyParams.toString()
+                const bodyParams = new URLSearchParams();
+                bodyParams.set('recaptchaToken', token); // One-time use token
+                bodyParams.set('name', name);
+                bodyParams.set('data', data);
+
+                const response = await fetch(deploymentUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: bodyParams.toString()
+                });
+
+                const result = await response.json();
+
+                if (result.status === "error") {
+                    throw new Error(result.message);
+                }
+
+                resolve(result);
+            } catch (error) {
+                console.error('Request failed:', error);
+                reject(error);
+            }
         });
-
-        // Since no-cors hides the response, we assume success if no network error
-        return { status: "success" }; 
-    } catch (error) {
-        console.error('Network error:', error);
-        throw error;
-    }
+    });
 }
