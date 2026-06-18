@@ -416,7 +416,7 @@ function updateMdViewerButton() {
 const MD_VIEWER_URL = 'https://md-viewer-alpha.vercel.app';
 
 if (btnOpenMd) {
-    btnOpenMd.addEventListener('click', () => {
+    btnOpenMd.addEventListener('click', async () => {
         const text = encryptedField.value;
         if (!text.trim()) {
             showToast('No content to view!', 'error');
@@ -426,7 +426,10 @@ if (btnOpenMd) {
         const encodedContent = encodeURIComponent(text);
         const encodedFilename = encodeURIComponent(filename);
         const targetUrl = `${MD_VIEWER_URL}/#content=${encodedContent}&filename=${encodedFilename}`;
-        window.open(targetUrl, '_blank');
+        const newWindow = window.open(targetUrl, '_blank');
+        if (!newWindow) {
+            window.location.href = targetUrl;
+        }
     });
 }
 
